@@ -1,0 +1,33 @@
+<section class="bg-light">
+  <div class="container py-5">
+    <div class="row text-center py-3">
+      <div class="col-lg-6 m-auto">
+        <h1 class="h1">Productos</h1>
+        <p>
+          Lista de productos
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4 mb-4" *ngFor="let product of products">
+        <div class="card h-100">
+          <a (click)="infoProd(product)">
+            <img [src]="product.img" class="card-img-top img-fluid rounded" style="max-height: 300px; object-fit: cover;" alt="...">
+          </a>
+          <div class="card-body">
+            <ul class="list-unstyled d-flex justify-content-between">
+              <li class="text-muted text-right">{{ product.price | currency }}</li>
+            </ul>
+            <a href="#" class="h2 text-decoration-none text-dark">{{ product.title }}</a>
+            <p class="card-text">
+              {{ product.desc }}
+            </p>
+            <button class="btn btn-primary btn-brown" (click)="agregarCar(product)">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  

@@ -1,0 +1,171 @@
+<section class="bg-light py-5">
+  <div class="container">
+    <!-- Encabezado -->
+    <header class="text-center mb-4">
+      <h1 class="h1 mb-2">Gestión de Órdenes</h1>
+      <p class="lead text-secondary">
+        Visualice y filtre las órdenes registradas en el sistema
+      </p>
+    </header>
+
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando datos...</span>
+      </div>
+    </div>
+
+    <!-- Panel de filtros -->
+    <div class="card mb-4 shadow-sm" *ngIf="!isLoading">
+      <div class="card-header bg-white">
+        <h2 class="h5 mb-0">Filtros de búsqueda</h2>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <!-- Filtro por usuario -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="username" class="form-label">
+                Buscar por nombre:
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                [(ngModel)]="usernameFilter"
+                (input)="filterOrders()"
+                placeholder="Filtrar por nombre de usuario" />
+            </div>
+          </div>
+
+          <!-- Selector de usuario -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="users" class="form-label">Seleccionar usuario:</label>
+              <select
+                class="form-select"
+                id="users"
+                aria-label="Seleccionar usuario"
+                (change)="onSelectUser($event)">
+                <option value="">Mostrar todas las órdenes</option>
+                <option *ngFor="let user of users" [value]="user._id">
+                  {{ user.username }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Filtro por fechas -->
+          <div class="col-12">
+            <label class="form-label">Rango de fechas:</label>
+            <div class="row g-2">
+              <div class="col-sm-5">
+                <div class="input-group">
+                  <span class="input-group-text">Desde</span>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="startDate"
+                    [(ngModel)]="startDateFilter" />
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="input-group">
+                  <span class="input-group-text">Hasta</span>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="endDate"
+                    [(ngModel)]="endDateFilter" />
+                </div>
+              </div>
+              <div class="col-sm-2 d-grid">
+                <button class="btn btn-primary" (click)="filterOrders()">
+                  <i class="fas fa-search me-1"></i>
+                  Filtrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-flex justify-content-end mt-3">
+          <button
+            class="btn btn-outline-secondary"
+            (click)="resetFilters()"
+            aria-label="Restablecer filtros">
+            <i class="fas fa-undo me-1"></i>
+            Restablecer filtros
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de órdenes -->
+    <div class="card shadow-sm" *ngIf="!isLoading">
+      <div
+        class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Listado de órdenes</h2>
+        <button
+          class="btn btn-sm btn-primary"
+          (click)="generarPDF()"
+          [disabled]="filteredOrders.length === 0"
+          aria-label="Exportar a PDF">
+          <i class="fas fa-file-pdf me-1"></i>
+          Exportar a PDF
+        </button>
+      </div>
+
+      <div class="card-body p-0">
+        <!-- Mensaje cuando no hay datos -->
+        <div *ngIf="filteredOrders.length === 0" class="text-center py-5">
+          <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+          <p class="lead mb-0">
+            No se encontraron órdenes que coincidan con los filtros.
+          </p>
+        </div>
+
+        <!-- Tabla de datos -->
+        <div class="table-responsive" *ngIf="filteredOrders.length > 0">
+          <table
+            class="table table-striped table-hover mb-0"
+            id="orderTable"
+            #orderTable>
+            <caption class="visually-hidden">
+              Listado de órdenes de usuarios
+            </caption>
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Usuario</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Monto</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of filteredOrders">
+                <td>{{ order.username }}</td>
+                <td>
+                  <span
+                    class="badge rounded-pill"
+                    [ngClass]="{
+                      'bg-success': order.status === 'APPROVED',
+                      'bg-warning': order.status === 'PENDING',
+                      'bg-danger': order.status === 'CANCELLED'
+                    }">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td>{{ order.amount | currency }}</td>
+                <td>{{ order.address }}</td>
+                <td>{{ order.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

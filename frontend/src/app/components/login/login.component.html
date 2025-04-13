@@ -1,0 +1,120 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Header -->
+    <div class="login-header">
+      <h1 class="login-title">Iniciar Sesión</h1>
+      <p class="login-subtitle">Ingresa tus credenciales para continuar</p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Nombre de Usuario Field (antes era Email) -->
+      <div class="form-group">
+        <label for="username" class="form-label">Nombre de Usuario</label>
+        <div class="input-wrapper">
+          <span class="input-icon">
+            <i class="fas fa-user"></i>
+            <!-- Cambiado de fa-envelope a fa-user -->
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            formControlName="username"
+            placeholder="Ingrese su nombre de usuario"
+            [class.is-invalid]="
+              usernameControl?.invalid && usernameControl?.touched
+            " />
+        </div>
+        <div
+          class="error-message"
+          *ngIf="usernameControl?.invalid && usernameControl?.touched">
+          <span *ngIf="usernameControl?.errors?.['required']">
+            El nombre de usuario es requerido
+          </span>
+          <span *ngIf="usernameControl?.errors?.['minlength']">
+            El nombre de usuario debe tener al menos 3 caracteres
+          </span>
+        </div>
+      </div>
+
+      <!-- ... resto del código ... -->
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-wrapper">
+          <span class="input-icon">
+            <i class="fas fa-lock"></i>
+          </span>
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            class="form-control"
+            id="password"
+            formControlName="password"
+            placeholder="Ingrese su contraseña"
+            [class.is-invalid]="
+              passwordControl?.invalid && passwordControl?.touched
+            " />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="
+              hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'
+            ">
+            <i
+              class="fas"
+              [class.fa-eye]="hidePassword"
+              [class.fa-eye-slash]="!hidePassword"></i>
+          </button>
+        </div>
+        <div
+          class="error-message"
+          *ngIf="passwordControl?.invalid && passwordControl?.touched">
+          <span *ngIf="passwordControl?.errors?.['required']">
+            La contraseña es requerida
+          </span>
+          <span *ngIf="passwordControl?.errors?.['minlength']">
+            La contraseña debe tener al menos 6 caracteres
+          </span>
+        </div>
+      </div>
+
+      <!-- Remember me checkbox -->
+      <div class="form-checkbox">
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="rememberMe" formControlName="rememberMe" />
+          <label for="rememberMe">Recordarme</label>
+        </div>
+        <a href="javascript:void(0)" class="forgot-password">
+          ¿Olvidaste tu contraseña?
+        </a>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancelLogin()">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn-login"
+          [disabled]="isLoading || loginForm.invalid">
+          <span *ngIf="isLoading" class="spinner"></span>
+          <span *ngIf="!isLoading">Iniciar Sesión</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Register Link -->
+    <div class="register-link">
+      <p>
+        ¿No tienes cuenta?
+        <a href="javascript:void(0)" (click)="navigateToRegister()">
+          Regístrate aquí
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

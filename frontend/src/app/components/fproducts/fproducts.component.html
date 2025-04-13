@@ -1,0 +1,316 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light">
+          <h2 class="card-title h4 mb-0">
+            {{ accion === 'new' ? 'Nuevo Producto' : 'Editar Producto' }}
+          </h2>
+        </div>
+
+        <!-- Indicador de carga -->
+        <div *ngIf="isLoading" class="text-center my-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+
+        <!-- Formulario de producto -->
+        <div class="card-body" [class.d-none]="isLoading">
+          <form novalidate (ngSubmit)="onSubmit()" #formProd="ngForm">
+            <!-- Nombre del producto -->
+            <div class="mb-3">
+              <label for="title" class="form-label">Nombre</label>
+              <input
+                required
+                #title="ngModel"
+                [(ngModel)]="producto.title"
+                type="text"
+                class="form-control"
+                [class.is-invalid]="
+                  title.invalid && (title.dirty || title.touched)
+                "
+                id="title"
+                name="title"
+                aria-describedby="titleHelp" />
+              <div
+                *ngIf="title.invalid && (title.dirty || title.touched)"
+                class="invalid-feedback">
+                Nombre del producto es requerido
+              </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-3">
+              <label for="desc" class="form-label">Descripción</label>
+              <textarea
+                required
+                #desc="ngModel"
+                [(ngModel)]="producto.desc"
+                class="form-control"
+                [class.is-invalid]="
+                  desc.invalid && (desc.dirty || desc.touched)
+                "
+                id="desc"
+                name="desc"
+                rows="3"
+                aria-describedby="descHelp"></textarea>
+              <div
+                *ngIf="desc.invalid && (desc.dirty || desc.touched)"
+                class="invalid-feedback">
+                Descripción del producto es requerida
+              </div>
+            </div>
+
+            <!-- URL de imagen -->
+            <div class="mb-3">
+              <label
+                for="img"
+                class="form-label d-flex justify-content-between align-items-center">
+                <span>Imagen (URL)</span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-info"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalPago">
+                  ¿Cómo obtener URL de imagen?
+                </button>
+              </label>
+              <input
+                required
+                #img="ngModel"
+                [(ngModel)]="producto.img"
+                type="text"
+                class="form-control"
+                [class.is-invalid]="img.invalid && (img.dirty || img.touched)"
+                id="img"
+                name="img"
+                aria-describedby="imgHelp" />
+              <div
+                *ngIf="img.invalid && (img.dirty || img.touched)"
+                class="invalid-feedback">
+                URL de imagen es requerida
+              </div>
+
+              <!-- Vista previa de imagen -->
+              <div
+                *ngIf="producto.img && producto.img.trim() !== ''"
+                class="mt-2">
+                <img
+                  [src]="producto.img"
+                  class="img-thumbnail"
+                  alt="Vista previa de imagen"
+                  style="max-height: 150px" />
+              </div>
+            </div>
+
+            <!-- Categoría -->
+            <div class="mb-3">
+              <label for="categories" class="form-label">Categoría</label>
+              <input
+                required
+                #categories="ngModel"
+                [(ngModel)]="producto.categories"
+                type="text"
+                class="form-control"
+                [class.is-invalid]="
+                  categories.invalid && (categories.dirty || categories.touched)
+                "
+                id="categories"
+                name="categories" />
+              <div
+                *ngIf="
+                  categories.invalid && (categories.dirty || categories.touched)
+                "
+                class="invalid-feedback">
+                Categoría del producto es requerida
+              </div>
+            </div>
+
+            <!-- Fila para tamaño y color -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="size" class="form-label">Tamaño</label>
+                  <input
+                    required
+                    #size="ngModel"
+                    [(ngModel)]="producto.size"
+                    type="text"
+                    class="form-control"
+                    [class.is-invalid]="
+                      size.invalid && (size.dirty || size.touched)
+                    "
+                    id="size"
+                    name="size" />
+                  <div
+                    *ngIf="size.invalid && (size.dirty || size.touched)"
+                    class="invalid-feedback">
+                    Tamaño del producto es requerido
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="color" class="form-label">Color</label>
+                  <input
+                    required
+                    #color="ngModel"
+                    [(ngModel)]="producto.color"
+                    type="text"
+                    class="form-control"
+                    [class.is-invalid]="
+                      color.invalid && (color.dirty || color.touched)
+                    "
+                    id="color"
+                    name="color" />
+                  <div
+                    *ngIf="color.invalid && (color.dirty || color.touched)"
+                    class="invalid-feedback">
+                    Color del producto es requerido
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila para cantidad y precio -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="quantity" class="form-label">Cantidad</label>
+                  <input
+                    required
+                    min="0"
+                    #quantity="ngModel"
+                    [(ngModel)]="producto.quantity"
+                    type="number"
+                    class="form-control"
+                    [class.is-invalid]="
+                      quantity.invalid && (quantity.dirty || quantity.touched)
+                    "
+                    id="quantity"
+                    name="quantity" />
+                  <div
+                    *ngIf="
+                      quantity.invalid && (quantity.dirty || quantity.touched)
+                    "
+                    class="invalid-feedback">
+                    <div *ngIf="quantity.errors?.['required']">
+                      Cantidad es requerida
+                    </div>
+                    <div *ngIf="quantity.errors?.['min']">
+                      Cantidad debe ser mayor o igual a 0
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="price" class="form-label">Precio</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input
+                      required
+                      min="0"
+                      #price="ngModel"
+                      [(ngModel)]="producto.price"
+                      type="number"
+                      class="form-control"
+                      [class.is-invalid]="
+                        price.invalid && (price.dirty || price.touched)
+                      "
+                      id="price"
+                      name="price" />
+                    <div
+                      *ngIf="price.invalid && (price.dirty || price.touched)"
+                      class="invalid-feedback">
+                      <div *ngIf="price.errors?.['required']">
+                        Precio es requerido
+                      </div>
+                      <div *ngIf="price.errors?.['min']">
+                        Precio debe ser mayor o igual a 0
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-danger" (click)="cancelar()">
+                <i class="bi bi-x-circle me-1"></i>
+                Cancelar
+              </button>
+
+              <button
+                *ngIf="accion == 'new'"
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="formProd.invalid || isLoading">
+                <i class="bi bi-save me-1"></i>
+                Guardar Producto
+              </button>
+
+              <button
+                *ngIf="accion == 'update'"
+                type="submit"
+                class="btn btn-success"
+                [disabled]="formProd.invalid || isLoading">
+                <i class="bi bi-pencil me-1"></i>
+                Actualizar Producto
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de ayuda para URL de imagen -->
+<div
+  class="modal fade"
+  id="modalPago"
+  tabindex="-1"
+  aria-labelledby="modalPagoLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPagoLabel">
+          ¿Cómo obtener la URL de una imagen?
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ol class="list-group list-group-numbered">
+          <li class="list-group-item">
+            Busca y selecciona la imagen que deseas en cualquier navegador
+          </li>
+          <li class="list-group-item">Haz clic derecho sobre la imagen</li>
+          <li class="list-group-item">
+            Selecciona la opción "Copiar dirección de imagen" o similar
+          </li>
+          <li class="list-group-item">
+            Pega la dirección en el campo URL de imagen
+          </li>
+        </ol>
+        <div class="alert alert-info mt-3">
+          <i class="bi bi-info-circle me-2"></i>
+          La imagen debe estar disponible públicamente en internet para que
+          funcione correctamente.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

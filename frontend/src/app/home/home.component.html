@@ -1,0 +1,134 @@
+<!-- Banner Hero con indicador de carga -->
+<section class="banner-section">
+  <div class="container py-5">
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+
+    <app-slider *ngIf="!isLoading && !error"></app-slider>
+  </div>
+</section>
+
+<!-- Productos Destacados -->
+<section class="container py-5">
+  <div class="row text-center pt-3">
+    <div class="col-lg-6 m-auto">
+      <h1 class="h1">Productos Especiales</h1>
+      <p>
+        Los productos de macramé ofrecen una combinación única de arte y
+        funcionalidad, creando piezas decorativas y prácticas para el hogar.
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando productos...</span>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!isLoading && products.length === 0 && !error"
+    class="text-center py-5">
+    <p class="text-muted">No se encontraron productos disponibles.</p>
+  </div>
+
+  <div class="row">
+    <div
+      class="col-12 col-md-4 col-lg-4 mb-4"
+      *ngFor="let product of products | slice : 0 : 6; let i = index">
+      <div class="card h-100">
+        <div class="product-container">
+          <a [routerLink]="['/infoprod', product._id]" class="product-link">
+            <img
+              [src]="product.img"
+              class="card-img-top img-fluid aspect-ratio"
+              [alt]="'Imagen de ' + product.title" />
+            <div class="shop-text">
+              <p>Ver Producto</p>
+            </div>
+          </a>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled d-flex justify-content-between">
+            <li class="text-muted">{{ product.price | currency }}</li>
+          </ul>
+          <h2 class="h5">
+            <a
+              [routerLink]="['/infoprod', product._id]"
+              class="text-decoration-none text-dark">
+              {{ product.title }}
+            </a>
+          </h2>
+          <p class="card-text">
+            {{
+              product.desc.length > 100
+                ? (product.desc | slice : 0 : 100) + '...'
+                : product.desc
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categorías del Mes -->
+<section class="bg-light">
+  <div class="container py-5">
+    <div class="row text-center py-3">
+      <div class="col-lg-6 m-auto">
+        <h2 class="h1">Categorías del Mes</h2>
+        <p>
+          ¡Descubre nuestras categorías destacadas del mes! Estamos emocionados
+          de presentarte una selección especial de categorías que son tendencia
+          y que te encantarán.
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando categorías...</span>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!isLoading && categoryProducts.length === 0 && !error"
+      class="text-center py-5">
+      <p class="text-muted">No se encontraron categorías disponibles.</p>
+    </div>
+
+    <div class="row">
+      <div
+        class="col-12 col-md-4 p-5 mt-3"
+        *ngFor="let product of categoryProducts | slice : 0 : 3">
+        <div class="category-item text-center">
+          <button
+            class="btn btn-link p-0 category-button"
+            (click)="navigateToCategory(product.categories)"
+            [attr.aria-label]="'Ver categoría ' + product.categories">
+            <div class="product-container">
+              <div class="product-link">
+                <img
+                  [src]="product.img"
+                  class="rounded-circle img-fluid border product-image"
+                  [alt]="'Categoría de ' + product.categories" />
+                <div class="shop-text">
+                  <p>Ver Categoría</p>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-center mt-3">{{ product.categories }}</h3>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

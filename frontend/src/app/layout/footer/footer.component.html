@@ -1,0 +1,132 @@
+<footer class="bg-dark" id="footer">
+  <div class="container footer-container">
+    <div class="row">
+      <!-- Información de contacto -->
+      <div class="col-md-4 footer-section">
+        <h2 class="footer-title text-light pacha-brand">Pacha Tienda</h2>
+        <ul class="list-unstyled footer-link-list">
+          <li>
+            <i class="fas fa-map-marker-alt fa-fw" aria-hidden="true"></i>
+            <span class="text-light">San Salvador de Jujuy</span>
+          </li>
+          <li>
+            <i class="fa fa-phone fa-fw" aria-hidden="true"></i>
+            <a href="tel:+5493885404350" class="text-decoration-none">
+              388-540-4350
+            </a>
+          </li>
+          <li>
+            <i class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+            <a href="mailto:info@PachaCompany.com" class="text-decoration-none">
+              info&#64;PachaCompany.com
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Categorías de productos -->
+      <div class="col-md-4 footer-section">
+        <h2 class="footer-title text-light">Productos</h2>
+        <!-- Indicador de carga -->
+        <div *ngIf="isLoading" class="footer-loading py-2">
+          <div
+            class="spinner-border spinner-border-sm text-light"
+            role="status">
+            <span class="visually-hidden">Cargando categorías...</span>
+          </div>
+        </div>
+        <!-- Mensaje de error -->
+        <div *ngIf="error" class="text-warning py-2">
+          <small>{{ error }}</small>
+        </div>
+        <!-- Lista de categorías -->
+        <ul class="list-unstyled footer-link-list">
+          <li *ngFor="let category of categories">
+            <a
+              [routerLink]="['/productos']"
+              [queryParams]="{ category: category }"
+              class="text-decoration-none">
+              {{ category }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Enlaces de información -->
+      <div class="col-md-4 footer-section">
+        <h2 class="footer-title text-light">Información</h2>
+        <ul class="list-unstyled footer-link-list">
+          <li>
+            <a
+              class="text-decoration-none"
+              routerLink="/"
+              routerLinkActive="active">
+              Principal
+            </a>
+          </li>
+          <li>
+            <a
+              class="text-decoration-none"
+              [routerLink]="['/productos']"
+              [queryParams]="{ category: 'todos' }"
+              routerLinkActive="active">
+              Tienda
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Redes sociales y separador -->
+    <div class="row text-light mb-4">
+      <div class="col-12 mb-3">
+        <div class="w-100 my-3 border-top border-light"></div>
+      </div>
+      <div class="col-12">
+        <ul class="footer-icons">
+          <li>
+            <a
+              href="https://facebook.com/pachajujuy"
+              target="_blank"
+              rel="noopener"
+              aria-label="Facebook">
+              <i class="fab fa-facebook-f fa-lg" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.instagram.com/pachajujuy/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Instagram">
+              <i class="fab fa-instagram fa-lg" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://twitter.com/pachajujuy"
+              target="_blank"
+              rel="noopener"
+              aria-label="Twitter">
+              <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-copyright">
+    <div class="container">
+      <div class="row pt-2">
+        <div class="col-12">
+          <p class="text-light">
+            Copyright &copy; {{ currentYear }} Pacha Company | Diseñado por
+            <a href="#" target="_blank" rel="noopener">Pacha</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

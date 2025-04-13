@@ -1,0 +1,112 @@
+:host {
+  display: block;
+}
+
+/* Estilos básicos para la tabla */
+.table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 767px) {
+  .table-responsive {
+    border: none;
+    margin-bottom: 0;
+  }
+
+  /* Ocultar encabezados en móvil */
+  .table thead {
+    display: none;
+  }
+
+  /* Convertir filas en tarjetas */
+  .table tbody tr {
+    display: block;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+  }
+
+  /* Estilo para cada celda */
+  .table tbody td,
+  .table tbody th {
+    display: block;
+    text-align: center;
+    border: none;
+    padding: 0.75rem;
+    position: relative;
+  }
+
+  /* Primera celda con fondo diferente */
+  .table tbody tr td:first-child {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+
+  /* Última celda con borde redondeado */
+  .table tbody tr td:last-child {
+    border-radius: 0 0 0.25rem 0.25rem;
+  }
+
+  /* Añadir etiquetas a las celdas usando data-th o data-label */
+  .table tbody td[data-th]::before,
+  .table tbody td[data-label]::before {
+    content: attr(data-th, data-label);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #6c757d;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Estilo para celdas con badges */
+  .table td .badge {
+    display: inline-block;
+    min-width: 80px;
+  }
+
+  /* Columna de acciones */
+  .table td:last-child .btn-group {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .table td:last-child .btn {
+    flex: 1;
+    margin: 0 0.25rem;
+  }
+}
+
+/* Mejoras para ngx-datatable si decides usarla */
+.ngx-datatable.bootstrap {
+  box-shadow: none;
+  font-size: inherit;
+}
+
+.ngx-datatable.bootstrap .datatable-body .datatable-body-row {
+  border-top: 1px solid #dee2e6;
+}
+
+.ngx-datatable.bootstrap .datatable-body .datatable-body-row.active {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Clase de utilidad para indicadores de carga */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}

@@ -1,0 +1,35 @@
+body, ul, li, p, a, label, input, div {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px !important;
+    font-weight: 300 !important;
+  }
+  .h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 48px !important;
+    font-weight: 200 !important;
+  }
+  .card-image {
+    width: 438px;
+    height: 463px;
+  }
+  
+  .h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px !important;
+    font-weight: 300;
+  }
+  .h3 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px !important;
+  }
+  .btn-brown {
+    background-color: rgb(179, 161, 1);
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .btn-brown:hover {
+    background-color: darkbrown;
+    color: yellow;
+  }
+ 

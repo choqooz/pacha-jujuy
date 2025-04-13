@@ -1,0 +1,123 @@
+<section class="bg-light py-5">
+  <div class="container">
+    <!-- Encabezado -->
+    <div class="row mb-4">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-5 fw-bold">Estadísticas de Usuarios y Ganancias</h1>
+        <p class="lead text-secondary">
+          Esta tabla muestra los usuarios registrados mensualmente y los
+          ingresos generados en cada período.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tarjeta de resumen (opcional) -->
+    <div class="row mb-4">
+      <div class="col-md-4 mb-3">
+        <div class="card bg-primary text-white h-100">
+          <div class="card-body text-center">
+            <h3 class="card-title h5">Total Usuarios</h3>
+            <p class="display-4">{{ calcularTotalUsuarios() }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card bg-success text-white h-100">
+          <div class="card-body text-center">
+            <h3 class="card-title h5">Meses con Registros</h3>
+            <p class="display-4">{{ stats.length }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card bg-info text-white h-100">
+          <div class="card-body text-center">
+            <h3 class="card-title h5">Total Ingresos</h3>
+            <p class="display-4">${{ calcularTotalIngresos() }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de estadísticas -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow-sm">
+          <div
+            class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">Estadísticas Mensuales</h2>
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="generarPDF()"
+              aria-label="Generar PDF">
+              <i class="fas fa-file-pdf me-1"></i>
+              Exportar a PDF
+            </button>
+          </div>
+          <div class="card-body p-0">
+            <!-- Estado de carga -->
+            <div *ngIf="stats.length === 0" class="text-center py-5">
+              <div
+                class="spinner-border text-primary"
+                role="status"
+                *ngIf="isLoading">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+              <p *ngIf="!isLoading" class="text-muted mb-0">
+                No hay datos disponibles para mostrar.
+              </p>
+            </div>
+
+            <!-- Tabla de datos -->
+            <div class="table-responsive" id="tablaEstadisticas">
+              <table
+                class="table table-hover table-striped mb-0"
+                *ngIf="stats.length > 0">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col" class="text-center">Mes</th>
+                    <th scope="col" class="text-center">Ingresos</th>
+                    <th scope="col" class="text-center">
+                      Usuarios Registrados
+                    </th>
+                    <th scope="col" class="text-center">
+                      Porcentaje del Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let month of stats; let i = index">
+                    <td class="text-center">{{ getMonthName(month._id) }}</td>
+                    <td class="text-end">
+                      {{
+                        getMonthlyIncome(month._id) !== '-'
+                          ? '$' + getMonthlyIncome(month._id)
+                          : '-'
+                      }}
+                    </td>
+                    <td class="text-center">{{ month.total }}</td>
+                    <td class="text-center">
+                      <div class="progress" style="height: 20px">
+                        <div
+                          class="progress-bar"
+                          role="progressbar"
+                          [style.width]="calculatePercentage(month.total) + '%'"
+                          [attr.aria-valuenow]="
+                            calculatePercentage(month.total)
+                          "
+                          aria-valuemin="0"
+                          aria-valuemax="100">
+                          {{ calculatePercentage(month.total) }}%
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

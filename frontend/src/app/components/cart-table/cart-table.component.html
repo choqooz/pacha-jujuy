@@ -1,0 +1,128 @@
+<section class="bg-light">
+  <div class="container py-5">
+    <!-- Encabezado -->
+    <div class="row text-center py-3">
+      <div class="col-lg-6 m-auto">
+        <h1 class="h1">Gestión de Carritos</h1>
+        <p>
+          Aquí puede ver, filtrar y administrar los carritos registrados en el
+          sistema.
+        </p>
+      </div>
+    </div>
+
+    <!-- Indicador de carga -->
+    <div *ngIf="loading" class="d-flex justify-content-center my-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="alert alert-danger mb-3">
+      {{ error }}
+    </div>
+
+    <!-- Filtros -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="username">Buscar por nombre de usuario:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            placeholder="Ingrese nombre de usuario"
+            [(ngModel)]="usernameFilter" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="userSelect">Filtrar por usuario:</label>
+          <select
+            class="form-control"
+            id="userSelect"
+            [(ngModel)]="selectedUser"
+            (change)="filterCartsByUser()">
+            <option value="">Todos los usuarios</option>
+            <option *ngFor="let user of users" [value]="user._id">
+              {{ user.username }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group text-center my-4">
+          <button
+            class="btn btn-primary me-2"
+            (click)="filterCarts()"
+            aria-label="Buscar carritos">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="ms-1">Buscar</span>
+          </button>
+          <button
+            class="btn btn-secondary"
+            (click)="resetFilters()"
+            aria-label="Restablecer filtros">
+            <i class="fas fa-undo" aria-hidden="true"></i>
+            <span class="ms-1">Restablecer</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div
+      *ngIf="!loading && filteredCarts.length === 0"
+      class="alert alert-info text-center">
+      No se encontraron carritos que coincidan con los criterios de búsqueda.
+    </div>
+
+    <!-- Tabla de carritos -->
+    <div class="row" *ngIf="!loading && filteredCarts.length > 0">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-striped border border-1 text-center">
+            <thead class="table-dark">
+              <tr>
+                <th style="width: 14%">USUARIO</th>
+                <th style="width: 20%">PRODUCTOS</th>
+                <th style="width: 10%">TOTAL</th>
+                <th style="width: 10%">FECHA</th>
+                <th style="width: 10%">ACCIONES</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cart of filteredCarts">
+                <td>{{ cart.user ? cart.user.username : 'No se registró' }}</td>
+                <td>
+                  <span *ngIf="cart.products && cart.products.length > 0">
+                    <span
+                      *ngFor="let product of cart.products; let last = last">
+                      {{ product.title }}{{ last ? '' : ', ' }}
+                    </span>
+                  </span>
+                  <span *ngIf="!cart.products || cart.products.length === 0">
+                    Sin productos
+                  </span>
+                </td>
+                <td>${{ cart.totalAmount | number : '1.2-2' }}</td>
+                <td>{{ cart.createdAt | date : 'dd/MM/yyyy' }}</td>
+                <td>
+                  <button
+                    (click)="confirmarEliminar(cart)"
+                    class="btn btn-danger"
+                    style="width: 100px"
+                    aria-label="Eliminar carrito">
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    <span class="ms-1">Eliminar</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

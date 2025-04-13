@@ -1,0 +1,60 @@
+@media screen and (max-width: 900px) {
+  table {
+    width: 100%;
+  }
+  thead {
+    display: none;
+  }
+  tr:nth-of-type(2n) {
+    background-color: inherit;
+  }
+  tr td:first-child {
+    background: #f0f0f0;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+  tbody td {
+    display: block;
+    text-align: center;
+  }
+  tbody td:before {
+    content: attr(data-th);
+    display: block;
+    text-align: center;
+  }
+
+  .table-responsive {
+    border: none;
+  }
+
+  tbody tr {
+    margin-bottom: 1rem;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+  }
+
+  tbody td[data-th]::before {
+    font-weight: bold;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+  }
+
+  td.text-truncate {
+    max-width: 100% !important;
+    white-space: normal;
+  }
+
+  /* Mejorar presentación de acciones en móvil */
+  td[data-th='Acciones'] .btn-group {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  td[data-th='Acciones'] .btn {
+    flex: 1;
+    padding: 0.5rem;
+    margin: 0 0.25rem;
+  }
+}

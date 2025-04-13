@@ -1,0 +1,190 @@
+<section class="product-detail py-4">
+  <div class="container">
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">
+          Cargando información del producto...
+        </span>
+      </div>
+    </div>
+
+    <div class="row g-4" *ngIf="!isLoading">
+      <!-- Imagen y características -->
+      <div class="col-lg-8 col-md-6">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-0">
+            <figure class="mb-0 text-center bg-light p-3">
+              <img
+                [src]="producto.img"
+                [alt]="'Imagen de ' + producto.title"
+                class="img-fluid product-image"
+                style="max-height: 400px; object-fit: contain" />
+            </figure>
+          </div>
+        </div>
+
+        <div class="card mt-4 shadow-sm">
+          <div class="card-header bg-light">
+            <h3 class="h5 mb-0">Características del Producto</h3>
+          </div>
+          <div class="card-body">
+            <dl class="row mb-0">
+              <dt class="col-sm-4">Descripción:</dt>
+              <dd class="col-sm-8 mb-1">{{ producto.desc }}</dd>
+
+              <dt class="col-sm-4">Tamaño:</dt>
+              <dd class="col-sm-8 mb-1">{{ producto.size }}</dd>
+
+              <dt class="col-sm-4">Color:</dt>
+              <dd class="col-sm-8 mb-1">{{ producto.color }}</dd>
+
+              <dt class="col-sm-4">Categoría:</dt>
+              <dd class="col-sm-8 mb-1">{{ producto.categories }}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información de compra -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm sticky-md-top" style="top: 1rem">
+          <div class="card-body">
+            <span class="badge bg-success mb-2">Nuevo</span>
+            <span class="text-muted small ms-2">+50 vendidos</span>
+
+            <h1 class="h3 mb-3">{{ producto.title }}</h1>
+
+            <!-- Valoraciones -->
+            <div class="mb-3">
+              <span
+                class="text-warning me-1"
+                *ngFor="let star of [1, 2, 3, 4, 5]">
+                <i class="fa fa-star"></i>
+              </span>
+            </div>
+
+            <!-- Precio -->
+            <h2 class="h2 mb-4 fw-bold text-primary">
+              {{ producto.price | currency }}
+            </h2>
+
+            <!-- Stock -->
+            <div
+              class="mb-3"
+              *ngIf="producto.quantity && producto.quantity > 0">
+              <span class="badge bg-info">
+                Stock disponible: {{ producto.quantity }} unidades
+              </span>
+            </div>
+
+            <!-- Métodos de pago -->
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-secondary mb-4"
+              data-bs-toggle="modal"
+              data-bs-target="#paymentModal">
+              <i class="fa fa-credit-card me-2"></i>
+              Ver métodos de pago
+            </button>
+
+            <!-- Botón de acción -->
+            <div class="d-grid gap-2">
+              <button
+                (click)="addToCart()"
+                class="btn btn-lg btn-primary"
+                [disabled]="producto.quantity <= 0">
+                <i class="fa fa-shopping-cart me-2"></i>
+                Agregar al Carrito
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos relacionados (si estuvieran implementados) -->
+    <!-- <section class="related-products mt-5">...</section> -->
+  </div>
+</section>
+
+<!-- Modal de métodos de pago (fuera del flujo principal para mejor organización) -->
+<div
+  class="modal fade"
+  id="paymentModal"
+  tabindex="-1"
+  aria-labelledby="paymentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentModalLabel">
+          Métodos de pago para este producto
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p class="lead">
+          Puedes elegir entre cualquiera de estos medios para realizar tu compra
+          de forma simple y segura.
+        </p>
+
+        <!-- Tarjetas de crédito -->
+        <div class="payment-section mb-4">
+          <h6 class="fw-bold">Tarjetas de Crédito</h6>
+          <p>Hasta 12 cuotas sin interés</p>
+          <div class="row g-3">
+            <div class="col-4 col-md-2 text-center">
+              <img
+                src="https://http2.mlstatic.com/storage/logos-api-admin/a5f047d0-9be0-11ec-aad4-c3381f368aaf-m.svg"
+                alt="Visa"
+                class="img-fluid mb-2" />
+              <p class="small mb-0">12 cuotas</p>
+            </div>
+            <div class="col-4 col-md-2 text-center">
+              <img
+                src="https://http2.mlstatic.com/storage/logos-api-admin/992bc350-f3be-11eb-826e-6db365b9e0dd-m.svg"
+                alt="Mastercard"
+                class="img-fluid mb-2" />
+              <p class="small mb-0">12 cuotas</p>
+            </div>
+            <div class="col-4 col-md-2 text-center">
+              <img
+                src="https://http2.mlstatic.com/storage/logos-api-admin/aa2b8f70-5c85-11ec-ae75-df2bef173be2-m.svg"
+                alt="American Express"
+                class="img-fluid mb-2" />
+              <p class="small mb-0">12 cuotas</p>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <!-- Mercado Pago -->
+        <div class="payment-section">
+          <h6 class="fw-bold">Dinero en tu cuenta de Mercado Pago</h6>
+          <p>
+            Al finalizar tu compra, pagás con el dinero disponible en tu cuenta.
+            Podés ingresar dinero a Mercado Pago por débito inmediato,
+            transferencia bancaria o en efectivo.
+          </p>
+          <div class="col-4 col-md-2">
+            <img
+              src="https://http2.mlstatic.com/storage/logos-api-admin/b4534650-571b-11e8-95d8-631c1a9a92a9-m.svg"
+              alt="Mercado Pago"
+              class="img-fluid" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

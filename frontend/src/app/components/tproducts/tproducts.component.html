@@ -1,0 +1,216 @@
+<section class="bg-light py-4">
+  <div class="container">
+    <!-- Encabezado -->
+    <header class="row mb-4">
+      <div class="col-lg-8 col-md-10 mx-auto text-center">
+        <h1 class="h2 mb-2">Gestión de Productos</h1>
+        <p class="text-muted">
+          Administre todos los productos disponibles en el sistema
+        </p>
+      </div>
+    </header>
+
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando productos...</span>
+      </div>
+    </div>
+
+    <!-- Panel de filtros -->
+    <div class="card shadow-sm mb-4" *ngIf="!isLoading">
+      <div class="card-header bg-white py-3">
+        <h2 class="h5 mb-0">Filtros de búsqueda</h2>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <!-- Filtro por nombre -->
+          <div class="col-md-6">
+            <label for="nameFilter" class="form-label">
+              Buscar por nombre o tipo:
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="nameFilter"
+              [(ngModel)]="nameFilter"
+              placeholder="Nombre o tipo de producto" />
+          </div>
+
+          <!-- Filtro por categoría -->
+          <div class="col-md-6">
+            <label for="categoryFilter" class="form-label">
+              Filtrar por categoría:
+            </label>
+            <select
+              class="form-select"
+              id="categoryFilter"
+              [(ngModel)]="selectedCategory">
+              <option value="">Todas las categorías</option>
+              <option
+                *ngFor="let category of categories$ | async"
+                [value]="category">
+                {{ category }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Filtro por rango de precio -->
+          <div class="col-md-6">
+            <label class="form-label">Rango de precio:</label>
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="input-group">
+                  <span class="input-group-text">Min $</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="minPrice"
+                    [(ngModel)]="minPriceFilter"
+                    min="0"
+                    placeholder="Desde" />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="input-group">
+                  <span class="input-group-text">Max $</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="maxPrice"
+                    [(ngModel)]="maxPriceFilter"
+                    min="0"
+                    placeholder="Hasta" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de acción para filtros -->
+          <div class="col-md-6 d-flex align-items-end">
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-primary"
+                (click)="applyFilters()"
+                title="Aplicar filtros">
+                <i class="fas fa-search me-1"></i>
+                Aplicar filtros
+              </button>
+              <button
+                class="btn btn-outline-secondary"
+                (click)="resetFilters()"
+                title="Restablecer filtros">
+                <i class="fas fa-undo me-1"></i>
+                Restablecer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de productos -->
+    <div class="card shadow-sm" *ngIf="!isLoading">
+      <div
+        class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Listado de productos</h2>
+        <button
+          (click)="addProduct()"
+          type="button"
+          class="btn btn-primary"
+          title="Añadir nuevo producto">
+          <i class="fas fa-plus me-1"></i>
+          Nuevo producto
+        </button>
+      </div>
+
+      <div class="card-body p-0">
+        <!-- Mensaje sin productos -->
+        <div *ngIf="filteredProducts.length === 0" class="text-center py-5">
+          <div class="text-muted">
+            <i class="fas fa-box-open fa-3x mb-3"></i>
+            <p class="mb-0">
+              No se encontraron productos que coincidan con los criterios de
+              búsqueda
+            </p>
+          </div>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="table-responsive" *ngIf="filteredProducts.length > 0">
+          <table class="table table-hover mb-0">
+            <caption class="visually-hidden">
+              Lista de productos disponibles
+            </caption>
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Tamaño</th>
+                <th scope="col">Color</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Stock</th>
+                <th scope="col" class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of filteredProducts">
+                <td>{{ product.title }}</td>
+                <td class="text-truncate" style="max-width: 200px">
+                  {{ product.desc }}
+                </td>
+                <td>
+                  <img
+                    [src]="product.img"
+                    [alt]="'Imagen de ' + product.title"
+                    class="img-thumbnail"
+                    style="height: 50px; width: auto; object-fit: contain" />
+                </td>
+                <td>{{ product.categories }}</td>
+                <td>{{ product.size }}</td>
+                <td>{{ product.color }}</td>
+                <td>{{ product.price | currency }}</td>
+                <td>
+                  <span>
+                    {{ product.quantity }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <div class="btn-group">
+                    <button
+                      (click)="editProduct(product)"
+                      class="btn btn-sm btn-outline-primary"
+                      title="Editar producto">
+                      <i class="fas fa-edit"></i>
+                      <span class="visually-hidden">
+                        Editar {{ product.title }}
+                      </span>
+                    </button>
+                    <button
+                      (click)="deleteProduct(product)"
+                      class="btn btn-sm btn-outline-danger"
+                      [disabled]="isDeletingProduct === product._id"
+                      title="Eliminar producto">
+                      <i
+                        *ngIf="isDeletingProduct !== product._id"
+                        class="fas fa-trash-alt"></i>
+                      <span
+                        *ngIf="isDeletingProduct === product._id"
+                        class="spinner-border spinner-border-sm"
+                        role="status"></span>
+                      <span class="visually-hidden">
+                        Eliminar {{ product.title }}
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
