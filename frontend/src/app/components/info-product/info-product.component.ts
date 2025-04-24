@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { Product } from 'src/app/models/product';
-import { ProductService } from 'src/app/service/product.service';
-import { UserService } from 'src/app/service/user.service';
+import { ProductService } from 'src/app/services/product.service';
+import { UserService } from 'src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';

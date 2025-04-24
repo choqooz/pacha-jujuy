@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Order } from 'src/app/models/order';
-import { OrderService } from 'src/app/service/order.service';
-import { UserService } from 'src/app/service/user.service';
+import { OrderService } from 'src/app/services/order.service';
+import { UserService } from 'src/app/services/user.service';
 import * as html2pdf from 'html2pdf.js';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, finalize, catchError, EMPTY } from 'rxjs';

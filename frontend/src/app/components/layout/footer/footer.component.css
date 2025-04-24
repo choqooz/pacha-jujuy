@@ -1,0 +1,407 @@
+:host {
+  display: block;
+}
+
+/* Estructura principal del footer */
+.footer-modern {
+  background: linear-gradient(135deg, #1a1d24 0%, #252b33 100%);
+  color: #f5f5f5;
+  position: relative;
+  margin-top: 0;
+  overflow: hidden;
+}
+
+/* Onda decorativa superior actualizada */
+.footer-wave {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 0;
+}
+
+.footer-wave svg {
+  display: block;
+  width: 100%;
+  height: 50px;
+}
+
+/* Logo y slogan - espaciado reducido */
+.footer-logo {
+  position: relative;
+  z-index: 2;
+  padding-top: 0.5rem;
+}
+
+.footer-logo h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  background: linear-gradient(45deg, #b6a61b, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.slogan {
+  color: #dcdde1;
+  font-style: italic;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 0;
+}
+
+/* Separadores decorativos - más compactos */
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.7rem 0;
+}
+
+.separator span {
+  display: block;
+  width: 70px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #b6a61b, transparent);
+  position: relative;
+}
+
+.separator span:before,
+.separator span:after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b6a61b;
+  top: -2.5px;
+}
+
+.separator span:before {
+  left: 10px;
+}
+
+.separator span:after {
+  right: 10px;
+}
+
+/* Contenido principal */
+.footer-content {
+  padding: 0.5rem 0;
+}
+
+/* Títulos de secciones - más compactos */
+.footer-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.7rem;
+  position: relative;
+  padding-bottom: 0.4rem;
+}
+
+.footer-title:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 2px;
+  background: #b6a61b;
+}
+
+/* Sección de contacto - espaciado reducido */
+.footer-section {
+  margin-bottom: 0.5rem;
+}
+
+.contact-list,
+.category-list,
+.info-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.3rem;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(182, 166, 27, 0.15);
+  margin-right: 15px;
+  transition: all 0.3s ease;
+}
+
+.contact-list li:hover .icon-wrapper {
+  background: rgba(182, 166, 27, 0.3);
+  transform: scale(1.05);
+}
+
+.icon-wrapper i {
+  color: #b6a61b;
+  font-size: 1.1rem;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-info span {
+  display: block;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.contact-info small {
+  color: #dcdde1;
+  font-size: 0.8rem;
+}
+
+.contact-info a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+  color: #b6a61b;
+}
+
+/* Categorías y enlaces informativos - espaciado reducido */
+.category-list li,
+.info-list li {
+  margin-bottom: 0.3rem;
+  transition: transform 0.3s ease;
+}
+
+.category-list li:hover,
+.info-list li:hover {
+  transform: translateX(5px);
+}
+
+.category-list a,
+.info-list a {
+  display: flex;
+  align-items: center;
+  color: #dcdde1;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.category-list a:hover,
+.info-list a:hover {
+  color: #b6a61b;
+}
+
+.category-list i,
+.info-list i {
+  margin-right: 10px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.category-list a:hover i,
+.info-list a:hover i {
+  opacity: 1;
+}
+
+/* Estado de carga */
+.footer-loading {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.footer-loading .spinner-border {
+  color: #b6a61b;
+}
+
+/* Mensaje de error */
+.footer-error {
+  color: #f39c12;
+  background: rgba(243, 156, 18, 0.1);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+/* Sección de redes sociales - espaciado reducido */
+.social-section {
+  margin: 0.5rem 0 0;
+}
+
+.social-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.7rem;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-icons li {
+  margin: 0 10px;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.social-icons a:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0)
+  );
+  z-index: -1;
+  transition: all 0.3s ease;
+  transform: scale(0);
+  border-radius: 50%;
+}
+
+.social-icons a:hover:before {
+  transform: scale(1);
+}
+
+.social-icons a:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.social-icons a.facebook:hover {
+  background: #3b5998;
+}
+
+.social-icons a.instagram:hover {
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
+}
+
+.social-icons a.twitter:hover {
+  background: #1da1f2;
+}
+
+.social-icons a.whatsapp:hover {
+  background: #25d366;
+}
+
+/* Sección de copyright - espaciado reducido */
+.footer-copyright {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.7rem 0;
+  color: #dcdde1;
+}
+
+.footer-copyright p {
+  margin-bottom: 0;
+  font-size: 0.85rem;
+}
+
+.footer-copyright i.fa-heart {
+  color: #e74c3c;
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+  .footer-logo h2 {
+    font-size: 2rem;
+  }
+
+  .footer-section {
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .footer-title:after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .contact-list li {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .icon-wrapper {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .social-icons li {
+    margin: 0 5px;
+  }
+
+  .social-icons a {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .footer-copyright p {
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .text-md-end {
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .footer-wave svg {
+    height: 40px;
+  }
+}

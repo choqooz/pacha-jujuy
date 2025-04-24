@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { UserService } from '../../service/user.service';
+import { UserService } from '../../services/user.service';
 import { AuthResponse } from '../../models/types';
 
 @Component({
@@ -79,9 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.router.navigate(['home']);
   }
 
-  // Getters para acceso fácil en el template
   get usernameControl() {
-    // Cambiado de emailControl a usernameControl
     return this.loginForm.get('username');
   }
 
@@ -90,7 +88,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private handleSuccessfulLogin(response: AuthResponse): void {
-    // Guarda el usuario en el servicio (centralizando los datos)
     this.userService.handleLoginSuccess(response);
 
     this.toastService.success(

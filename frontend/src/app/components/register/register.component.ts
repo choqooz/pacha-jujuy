@@ -1,39 +1,35 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { UserService } from 'src/app/service/user.service';
+import { UserService } from 'src/app/services/user.service';
+import { BaseFormComponent } from 'src/app/core/base-components/base-form.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
+import { CustomValidators } from 'src/app/core/validators/custom-validators';
+import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent extends BaseFormComponent {
   registerForm!: FormGroup;
-  isSubmitting = false;
   passwordVisible = false;
   confirmPasswordVisible = false;
-  private subscription: Subscription = new Subscription();
+  override isSubmitting = false;
 
   constructor(
     private userService: UserService,
-    private router: Router,
     private toastService: ToastrService,
-    private fb: FormBuilder
-  ) {}
-
-  ngOnInit(): void {
-    this.initForm();
+    private fb: FormBuilder,
+    protected override errorHandler: ErrorHandlerService,
+    protected override navigationService: NavigationService
+  ) {
+    super(errorHandler, navigationService);
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  private initForm(): void {
+  protected override initForm(): void {
     this.registerForm = this.fb.group(
       {
         username: ['', [Validators.required, Validators.minLength(3)]],
@@ -43,30 +39,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
           [
             Validators.required,
             Validators.minLength(6),
-            Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
-            ),
+            CustomValidators.strongPassword(),
           ],
         ],
         confirmPassword: ['', Validators.required],
       },
       {
-        validators: this.passwordMatchValidator,
+        validators: CustomValidators.mustMatch('password', 'confirmPassword'),
       }
     );
   }
 
-  private passwordMatchValidator(
-    form: FormGroup
-  ): { [key: string]: boolean } | null {
-    const password = form.get('password');
-    const confirmPassword = form.get('confirmPassword');
-
-    if (!password || !confirmPassword) return null;
-
-    return password.value === confirmPassword.value
-      ? null
-      : { passwordMismatch: true };
+  protected override getForm(): FormGroup {
+    return this.registerForm;
   }
 
   get f() {
@@ -82,13 +67,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    // Marcar todos los campos como touched para mostrar errores
-    Object.keys(this.registerForm.controls).forEach((key) => {
-      const control = this.registerForm.get(key);
-      control?.markAsTouched();
-    });
+    this.markAllAsTouched();
 
-    // Detener si el formulario es inválido
     if (this.registerForm.invalid) {
       this.toastService.warning(
         'Por favor corrija los errores en el formulario',
@@ -115,15 +95,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
             'Registro Exitoso',
             { timeOut: 2500 }
           );
-          this.router.navigate(['login']);
+          this.navigationService.goToLogin();
         },
-        (error) => this.handleError(error)
+        (error) => this.handleRegistrationError(error)
       );
 
-    this.subscription.add(sub);
+    this.addSubscription(sub);
   }
 
-  private handleError(error: any): void {
+  private handleRegistrationError(error: any): void {
     if (error.error?.keyPattern?.email) {
       this.toastService.error('Email ya registrado', 'Error de Registro');
       this.f['email'].setErrors({ alreadyExists: true });
@@ -134,18 +114,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
       );
       this.f['username'].setErrors({ alreadyExists: true });
     } else {
-      this.toastService.error(
-        error.error?.message || 'Ha ocurrido un error inesperado',
-        'Error de Registro'
-      );
+      this.handleFormError(error, 'Error de Registro');
     }
   }
 
   navigateToLogin(): void {
-    this.router.navigate(['login']);
+    this.navigationService.goToLogin();
   }
 
   cancel(): void {
-    this.router.navigate(['home']);
+    this.navigationService.goToHome();
   }
 }

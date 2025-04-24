@@ -1,5 +1,256 @@
 .btn-no-bg {
-    background-color: transparent;
-    border-color: transparent;
-    color: blue;
+  background-color: transparent;
+  border-color: transparent;
+  color: blue;
+}
+
+/* Estilos modernos para la sección de detalle de producto */
+.product-detail {
+  background-color: #f8f9fa;
+  padding: 3rem 0;
+}
+
+/* Contenedor de imágenes */
+.product-gallery {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.main-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background-color: #fff;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.product-image {
+  max-height: 400px;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.product-image:hover {
+  transform: scale(1.05);
+}
+
+.zoom-icon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.zoom-icon:hover {
+  background-color: #9b6708;
+  color: #fff;
+}
+
+/* Tarjeta de características */
+.features-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-top: 1.5rem;
+}
+
+.features-header {
+  background-color: #9b6708;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.features-content {
+  padding: 1.5rem;
+}
+
+.feature-item {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 1rem;
+}
+
+.feature-item:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.feature-label {
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.feature-value {
+  color: #333;
+}
+
+/* Tarjeta de compra */
+.purchase-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.purchase-card-body {
+  padding: 1.8rem;
+}
+
+.product-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.badge-new {
+  background-color: #d4edda;
+  color: #28a745;
+}
+
+.badge-popular {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.product-title {
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.ratings {
+  margin-bottom: 1rem;
+}
+
+.star-rating {
+  color: #ffc107;
+  margin-right: 0.3rem;
+  font-size: 1.1rem;
+}
+
+.rating-count {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.product-price {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #9b6708;
+}
+
+.stock-indicator {
+  margin-bottom: 1.5rem;
+}
+
+.stock-badge {
+  background-color: #e8f4fd;
+  color: #0c63e4;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.payment-methods-button {
+  border: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.payment-methods-button:hover {
+  background-color: #e9ecef;
+}
+
+.payment-methods-button i {
+  margin-right: 10px;
+  color: #9b6708;
+}
+
+.add-to-cart-button {
+  background-color: #9b6708;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.add-to-cart-button:hover:not([disabled]) {
+  background-color: #875a07;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(155, 103, 8, 0.3);
+}
+
+.add-to-cart-button[disabled] {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+/* Estilos para el modal de pagos */
+.payment-section {
+  margin-bottom: 2rem;
+}
+
+.payment-section-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.payment-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.payment-card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border-color: #9b6708;
+}
+
+.payment-logo {
+  max-width: 80px;
+  margin: 0 auto 0.5rem;
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { OrderService } from 'src/app/service/order.service';
-import { UserService } from 'src/app/service/user.service';
+import { OrderService } from 'src/app/services/order.service';
+import { UserService } from 'src/app/services/user.service';
 import * as html2pdf from 'html2pdf.js';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';

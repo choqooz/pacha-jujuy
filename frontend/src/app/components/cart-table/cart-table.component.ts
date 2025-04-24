@@ -4,8 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription, catchError, finalize, of } from 'rxjs';
 import { Cart } from 'src/app/models/cart';
 import { User } from 'src/app/models/user';
-import { CartService } from 'src/app/service/cart.service';
-import { UserService } from 'src/app/service/user.service';
+import { CartService } from 'src/app/services/cart.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-cart-table',

@@ -1,0 +1,202 @@
+<footer class="footer-modern">
+  <!-- Onda decorativa superior con forma mejorada -->
+  <div class="footer-wave">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1440 100"
+      preserveAspectRatio="none">
+      <path
+        fill="#ffffff"
+        d="M0,50 C320,110 480,0 720,50 C960,100 1120,20 1440,50 L1440,0 L0,0 Z"
+        fill-opacity="1"></path>
+    </svg>
+  </div>
+
+  <div class="container py-4">
+    <!-- Logo y slogan - espaciado reducido -->
+    <div class="footer-logo text-center mb-2">
+      <h2 class="pacha-brand">Pacha Tienda</h2>
+      <p class="slogan">Esencia de Jujuy en cada producto</p>
+    </div>
+
+    <!-- Separador decorativo - espaciado reducido -->
+    <div class="separator">
+      <span></span>
+    </div>
+
+    <!-- Contenido principal con espaciado reducido -->
+    <div class="row footer-content g-3">
+      <!-- Información de contacto -->
+      <div class="col-md-4 footer-section">
+        <h3 class="footer-title">Contáctanos</h3>
+        <ul class="contact-list">
+          <li>
+            <div class="icon-wrapper">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-info">
+              <span>San Salvador de Jujuy</span>
+              <small>Argentina</small>
+            </div>
+          </li>
+          <li>
+            <div class="icon-wrapper">
+              <i class="fa fa-phone"></i>
+            </div>
+            <div class="contact-info">
+              <a href="tel:+5493885404350">388-540-4350</a>
+              <small>Lun-Vie: 9am - 6pm</small>
+            </div>
+          </li>
+          <li>
+            <div class="icon-wrapper">
+              <i class="fa fa-envelope"></i>
+            </div>
+            <div class="contact-info">
+              <a href="mailto:info@PachaCompany.com">
+                info&#64;PachaCompany.com
+              </a>
+              <small>Soporte 24/7</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Categorías de productos -->
+      <div class="col-md-4 footer-section">
+        <h3 class="footer-title">Explora</h3>
+
+        <!-- Indicador de carga -->
+        <div *ngIf="isLoading" class="footer-loading">
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Cargando categorías...</span>
+          </div>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div *ngIf="error" class="footer-error">
+          <small>{{ error }}</small>
+        </div>
+
+        <!-- Lista de categorías -->
+        <ul class="category-list">
+          <li *ngFor="let category of categories">
+            <a
+              [routerLink]="['/productos']"
+              [queryParams]="{ category: category }">
+              <i class="fas fa-chevron-right"></i>
+              {{ category }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Enlaces de información -->
+      <div class="col-md-4 footer-section">
+        <h3 class="footer-title">Información</h3>
+        <ul class="info-list">
+          <li>
+            <a routerLink="/" routerLinkActive="active">
+              <i class="fas fa-home"></i>
+              Principal
+            </a>
+          </li>
+          <li>
+            <a
+              [routerLink]="['/productos']"
+              [queryParams]="{ category: 'todos' }"
+              routerLinkActive="active">
+              <i class="fas fa-store"></i>
+              Tienda
+            </a>
+          </li>
+          <li>
+            <a routerLink="/nosotros" routerLinkActive="active">
+              <i class="fas fa-users"></i>
+              Nosotros
+            </a>
+          </li>
+          <li>
+            <a routerLink="/politica-privacidad" routerLinkActive="active">
+              <i class="fas fa-shield-alt"></i>
+              Política de Privacidad
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Separador decorativo - espaciado reducido -->
+    <div class="separator">
+      <span></span>
+    </div>
+
+    <!-- Redes sociales - espaciado reducido -->
+    <div class="social-section text-center mb-2">
+      <h3 class="social-title mt-2">Síguenos</h3>
+      <ul class="social-icons">
+        <li>
+          <a
+            href="https://facebook.com/pachajujuy"
+            target="_blank"
+            rel="noopener"
+            aria-label="Facebook"
+            class="facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.instagram.com/pachajujuy/"
+            target="_blank"
+            rel="noopener"
+            aria-label="Instagram"
+            class="instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://twitter.com/pachajujuy"
+            target="_blank"
+            rel="noopener"
+            aria-label="Twitter"
+            class="twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://wa.me/5493885404350"
+            target="_blank"
+            rel="noopener"
+            aria-label="WhatsApp"
+            class="whatsapp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-copyright">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <p>
+            &copy; {{ currentYear }} Pacha Company. Todos los derechos
+            reservados.
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <p>
+            Diseñado con
+            <i class="fas fa-heart"></i>
+            en Jujuy, Argentina
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

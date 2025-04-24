@@ -1,0 +1,8 @@
+<div [ngClass]="[containerClass, padding]">
+  <div
+    [ngClass]="['spinner-border', textClass, spinnerSizeClass]"
+    role="status">
+    <span class="visually-hidden">{{ message }}</span>
+  </div>
+  <p *ngIf="message" class="mt-2">{{ message }}</p>
+</div>

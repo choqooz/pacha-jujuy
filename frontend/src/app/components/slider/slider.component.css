@@ -1,64 +1,117 @@
-* {
-    box-sizing: border-box;
-    
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding: 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel li {
+  list-style: none;
+  scroll-snap-align: center;
+  flex: 0 0 auto;
+  width: 300px;
+}
+
+.card {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  position: relative;
+  color: white;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  background-blend-mode: overlay;
+}
+
+.card h3 {
+  font-size: 0.9rem;
+  margin: 0.5rem auto;
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  display: inline-block;
+  color: white;
+}
+
+/* Estilos para los botones de navegación */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  color: #333;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.scroll-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-btn:focus {
+  outline: none;
+}
+
+.scroll-btn.left {
+  left: 10px;
+}
+
+.scroll-btn.right {
+  right: 10px;
+}
+
+/* Efecto de pulso para los botones */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
   }
-  
-  body {
-    font-family: 'Muli', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    overflow: hidden;
-    margin: 0;
+  70% {
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
   }
-  
-  .container {
-    display: flex;
-    width: 90vw;
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
-  
-  .panel {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 80vh;
-    border-radius: 50px;
-    color: #fff;
-    cursor: pointer;
-    flex: 0.5;
-    margin: 10px;
-    position: relative;
-    -webkit-transition: all 700ms ease-in;
-  }
-  
-  .panel h3 {
-    font-size: 40px;
-    position: absolute;
-    font-family: 'Indie Flower', cursive;
-    bottom: 20px;
-    left: 20px;
-    margin: 0;
-    opacity: 0;
-  }
-  
-  .panel.active {
-    flex: 5;
-  }
-  
-  .panel.active h3 {
-    opacity: 1;
-    transition: opacity 0.3s ease-in 0.4s;
-  }
-  
-  @media (max-width: 480px) {
-    .container {
-      width: 100vw;
-    }
-  
-    .panel:nth-of-type(4),
-    .panel:nth-of-type(5) {
-      display: none;
-    }
-  }
- 
+}
+
+.scroll-btn:active {
+  animation: pulse 0.3s;
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Estilos para los nuevos iconos de flechas */
+.nav-arrow {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1;
+}

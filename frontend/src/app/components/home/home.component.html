@@ -1,0 +1,185 @@
+<!-- Banner Hero con indicador de carga -->
+<section class="banner-section">
+  <div class="container py-5">
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+
+    <app-slider *ngIf="!isLoading && !error"></app-slider>
+  </div>
+</section>
+
+<!-- Productos Destacados -->
+<section class="featured-products-section">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-lg-8 m-auto">
+        <div class="section-header">
+          <h1 class="h1 section-title">Productos Especiales</h1>
+          <p class="text-muted">
+            Los productos de macramé ofrecen una combinación única de arte y
+            funcionalidad, creando piezas decorativas y prácticas para el hogar.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center py-5 loading-container">
+      <div class="spinner-border" style="color: #9b6708" role="status">
+        <span class="visually-hidden">Cargando productos...</span>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!isLoading && products.length === 0 && !error"
+      class="text-center py-5">
+      <p class="text-muted">No se encontraron productos disponibles.</p>
+    </div>
+
+    <div class="row g-4">
+      <div
+        class="col-12 col-md-6 col-lg-4"
+        *ngFor="let product of products | slice : 0 : 6; let i = index">
+        <div class="product-card h-100">
+          <div class="product-container">
+            <span *ngIf="i === 0" class="product-badge">Destacado</span>
+            <a [routerLink]="['/infoprod', product._id]" class="product-link">
+              <div class="image-container">
+                <img
+                  [src]="product.img"
+                  class="card-img-top product-card-image"
+                  [alt]="'Imagen de ' + product.title" />
+              </div>
+              <div class="shop-text">
+                <p>Ver Producto</p>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="product-price">{{ product.price | currency }}</span>
+              <small class="text-muted">
+                Cód: {{ product._id | slice : -5 }}
+              </small>
+            </div>
+            <h2 class="product-title">
+              <a
+                [routerLink]="['/infoprod', product._id]"
+                class="text-decoration-none text-dark">
+                {{ product.title }}
+              </a>
+            </h2>
+            <p class="product-description">
+              {{
+                product.desc.length > 80
+                  ? (product.desc | slice : 0 : 80) + '...'
+                  : product.desc
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categorías del Mes -->
+<section class="categories-section">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-lg-8 m-auto">
+        <div class="section-header">
+          <h2 class="h1 section-title">Categorías del Mes</h2>
+          <p class="text-muted">
+            Descubre nuestras categorías destacadas del mes con diseños
+            exclusivos que te ayudarán a transformar cualquier espacio.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center py-5 loading-container">
+      <div class="spinner-border" style="color: #9b6708" role="status">
+        <span class="visually-hidden">Cargando categorías...</span>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!isLoading && categoryProducts.length === 0 && !error"
+      class="text-center py-5">
+      <p class="text-muted">No se encontraron categorías disponibles.</p>
+    </div>
+
+    <div class="row d-flex justify-content-center categories-container">
+      <div
+        *ngFor="let product of categoryProducts | slice : 0 : 3; let i = index"
+        class="col-12 col-sm-6 col-md-4 animate-fade-in-up"
+        [style.animation-delay]="i * 0.2 + 's'">
+        <div class="category-item text-center">
+          <button
+            class="btn btn-link p-0 category-button"
+            (click)="navigateToCategory(product.categories)"
+            [attr.aria-label]="'Ver categoría ' + product.categories">
+            <div class="category-image-container">
+              <img
+                [src]="product.img"
+                class="category-image"
+                [alt]="'Categoría de ' + product.categories" />
+            </div>
+            <h3 class="category-title">{{ product.categories }}</h3>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección de información -->
+<section class="info-section">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="bi bi-truck"></i>
+          </div>
+          <h4 class="info-title">Envíos a Todo el País</h4>
+          <p class="info-text">
+            Hacemos envíos a todas partes de Argentina. Consulta los tiempos de
+            entrega para tu ubicación.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h4 class="info-title">Productos Artesanales</h4>
+          <p class="info-text">
+            Todos nuestros productos son elaborados cuidadosamente a mano,
+            garantizando calidad y originalidad.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="bi bi-credit-card"></i>
+          </div>
+          <h4 class="info-title">Pagos Seguros</h4>
+          <p class="info-text">
+            Aceptamos múltiples métodos de pago con la seguridad que brinda
+            MercadoPago.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

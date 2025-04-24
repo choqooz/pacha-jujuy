@@ -1,0 +1,729 @@
+<!-- Top Navigation Bar -->
+<div class="header-top-bar">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Social Media Icons -->
+      <div class="top-social-icons">
+        <a
+          href="https://facebook.com/pachajujuy"
+          target="_blank"
+          rel="noopener"
+          aria-label="Facebook">
+          <i class="fab fa-facebook-f" aria-hidden="true"></i>
+        </a>
+        <a
+          href="https://www.instagram.com/pachajujuy/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Instagram">
+          <i class="fab fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a
+          href="https://twitter.com/pachajujuy"
+          target="_blank"
+          rel="noopener"
+          aria-label="Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <!-- User Authentication Links -->
+      <div class="header-auth">
+        <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
+          <button
+            class="auth-btn register-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#registerModal">
+            <i class="fas fa-user-plus"></i>
+            Registrarme
+          </button>
+          <button
+            class="auth-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#loginModal">
+            <i class="fas fa-sign-in-alt"></i>
+            Iniciar Sesión
+          </button>
+        </ng-container>
+
+        <ng-template #loggedInTemplate>
+          <div class="user-welcome">
+            <span class="username">{{ username }}</span>
+            <span class="user-type" *ngIf="isAdmin">
+              <i class="fas fa-user-shield"></i>
+              Admin
+            </span>
+            <button
+              class="logout-btn"
+              (click)="logout()"
+              aria-label="Cerrar sesión">
+              <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Navigation -->
+<div class="main-header sticky-top">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Logo -->
+      <div class="logo-container">
+        <a class="brand-logo" routerLink="/" aria-label="Pacha - Ir al inicio">
+          <span class="logo-text">Pacha</span>
+          <span class="logo-tagline">Artesanías de Jujuy</span>
+        </a>
+      </div>
+
+      <!-- Mobile Toggle Button -->
+      <button
+        class="mobile-menu-toggle d-lg-none"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#main-nav"
+        aria-controls="main-nav"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="toggle-icon"></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <div class="main-menu-wrapper">
+        <div class="main-navigation" id="main-nav">
+          <ul class="nav-menu">
+            <!-- Standard User Navigation -->
+            <ng-container *ngIf="!modoAdmin">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/" routerLinkActive="active">
+                  <i class="nav-icon fas fa-home"></i>
+                  Principal
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="nav-icon fas fa-th-large"></i>
+                  Productos
+                </a>
+                <ul class="dropdown-menu">
+                  <li *ngFor="let category of categories">
+                    <a
+                      class="dropdown-item"
+                      [routerLink]="['/productos']"
+                      [queryParams]="{ category: category }">
+                      {{ category }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  [routerLink]="['/productos']"
+                  [queryParams]="{ category: 'todos' }"
+                  routerLinkActive="active">
+                  <i class="nav-icon fas fa-store"></i>
+                  Tienda
+                </a>
+              </li>
+            </ng-container>
+
+            <!-- Admin Navigation -->
+            <ng-container *ngIf="modoAdmin">
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['status']">
+                  <i class="nav-icon fas fa-chart-bar"></i>
+                  Estadísticas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['tuser']">
+                  <i class="nav-icon fas fa-users"></i>
+                  Usuarios
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['tproducts']">
+                  <i class="nav-icon fas fa-box"></i>
+                  Productos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['order-table']">
+                  <i class="nav-icon fas fa-clipboard-list"></i>
+                  Órdenes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['cartTable']">
+                  <i class="nav-icon fas fa-shopping-cart"></i>
+                  Carritos
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Search Icon -->
+        <button
+          class="action-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#searchModal"
+          (click)="buscarProductos()"
+          aria-label="Buscar productos">
+          <i class="fa fa-fw fa-search" aria-hidden="true"></i>
+        </button>
+
+        <!-- Cart Icon -->
+        <button
+          class="action-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#cartModal"
+          (click)="obtenerProductCarrito()"
+          aria-label="Ver carrito">
+          <i class="fa fa-fw fa-cart-arrow-down" aria-hidden="true"></i>
+          <span *ngIf="productCarrito.length" class="cart-count">
+            {{ productCarrito.length }}
+          </span>
+        </button>
+
+        <!-- Admin Mode Toggle (only for admins) -->
+        <button
+          *ngIf="isAdmin"
+          class="action-btn"
+          (click)="toggleModoAdmin()"
+          [class.active-mode]="modoAdmin"
+          aria-label="Modo administrador">
+          <i class="fas fa-user-tie" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search Modal -->
+<div
+  class="modal fade"
+  id="searchModal"
+  tabindex="-1"
+  aria-labelledby="searchModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="searchModalLabel">
+          Buscar Productos
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar productos..."
+            [(ngModel)]="searchTermino"
+            (keyup)="buscarProductos()"
+            aria-label="Buscar productos" />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="borrarFiltro()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Resultados de búsqueda -->
+        <div class="search-results" *ngIf="productosFiltrados.length > 0">
+          <h6 class="mb-3">Resultados de la búsqueda:</h6>
+          <div class="list-group">
+            <a
+              *ngFor="let producto of productosFiltrados"
+              class="list-group-item list-group-item-action cart-item"
+              (click)="infoProd(producto)"
+              data-bs-dismiss="modal">
+              <div class="d-flex align-items-center">
+                <div class="cart-item-image-container me-3">
+                  <img
+                    [src]="producto.img"
+                    alt="{{ producto.title }}"
+                    class="cart-item-img" />
+                </div>
+                <div class="cart-item-details">
+                  <h6>{{ producto.title }}</h6>
+                  <p class="mb-1 item-price">
+                    {{ producto.price | currency }}
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Mensaje cuando no hay resultados -->
+        <div
+          *ngIf="searchTermino && productosFiltrados.length === 0"
+          class="text-center py-3">
+          <p class="mb-0 text-muted">
+            No se encontraron resultados para "{{ searchTermino }}"
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cart Modal -->
+<div
+  class="modal fade"
+  id="cartModal"
+  tabindex="-1"
+  aria-labelledby="cartModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="cartModalLabel">Mi Carrito</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Carrito vacío -->
+        <div
+          *ngIf="!productCarrito.length"
+          class="text-center py-5 empty-cart-animation">
+          <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+          <h5>Tu carrito está vacío</h5>
+          <p class="text-muted">Agrega productos para comenzar a comprar</p>
+          <button
+            class="btn btn-success"
+            data-bs-dismiss="modal"
+            [routerLink]="['/productos']"
+            [queryParams]="{ category: 'todos' }">
+            Ver productos
+          </button>
+        </div>
+
+        <!-- Productos en carrito -->
+        <div *ngIf="productCarrito.length > 0" class="cart-products-container">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Subtotal</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let producto of productCarrito" class="cart-item">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="cart-item-image-container me-3">
+                        <img
+                          [src]="producto.img"
+                          alt="{{ producto.title }}"
+                          class="cart-item-img" />
+                      </div>
+                      <div class="cart-item-details">
+                        <h6>{{ producto.title }}</h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="item-price">{{ producto.price | currency }}</td>
+                  <td>
+                    <span class="item-quantity">{{ producto.quantity }}</span>
+                  </td>
+                  <td class="item-price">
+                    {{ producto.price * producto.quantity | currency }}
+                  </td>
+                  <td class="cart-item-actions">
+                    <button
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="removeFromCart(producto)">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="text-end fw-bold">Total:</td>
+                  <td colspan="2" class="fw-bold text-success">
+                    {{ total | currency }}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="productCarrito.length > 0"
+        class="modal-footer justify-content-between">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal">
+          Seguir comprando
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          data-bs-dismiss="modal"
+          (click)="crearCarrito()"
+          [disabled]="isLoading">
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm me-1"
+            role="status"
+            aria-hidden="true"></span>
+          Proceder al pago
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Registro -->
+<div
+  class="modal fade"
+  id="registerModal"
+  tabindex="-1"
+  aria-labelledby="registerModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="registerModalLabel">
+          Registrarse
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+          <!-- Nombre de usuario -->
+          <div class="mb-3">
+            <label for="register-username" class="form-label">
+              Nombre de Usuario
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="register-username"
+              formControlName="username"
+              [class.is-invalid]="
+                rf['username'].touched && rf['username'].invalid
+              " />
+            <div
+              class="invalid-feedback"
+              *ngIf="rf['username'].touched && rf['username'].invalid">
+              <span *ngIf="rf['username'].errors?.['required']">
+                El nombre de usuario es necesario
+              </span>
+              <span *ngIf="rf['username'].errors?.['minlength']">
+                Debe tener al menos 3 caracteres
+              </span>
+              <span *ngIf="rf['username'].errors?.['alreadyExists']">
+                Este nombre de usuario ya está registrado
+              </span>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="register-email" class="form-label">
+              Correo Electrónico
+            </label>
+            <input
+              type="email"
+              class="form-control"
+              id="register-email"
+              formControlName="email"
+              [class.is-invalid]="rf['email'].touched && rf['email'].invalid" />
+            <div
+              class="invalid-feedback"
+              *ngIf="rf['email'].touched && rf['email'].invalid">
+              <span *ngIf="rf['email'].errors?.['required']">
+                El email es necesario
+              </span>
+              <span *ngIf="rf['email'].errors?.['email']">
+                Debe ser un formato de email válido
+              </span>
+              <span *ngIf="rf['email'].errors?.['alreadyExists']">
+                Este email ya está registrado
+              </span>
+            </div>
+          </div>
+
+          <!-- Contraseña -->
+          <div class="mb-3">
+            <label for="register-password" class="form-label">Contraseña</label>
+            <div class="input-group">
+              <input
+                [type]="registerPasswordVisible ? 'text' : 'password'"
+                class="form-control"
+                id="register-password"
+                formControlName="password"
+                [class.is-invalid]="
+                  rf['password'].touched && rf['password'].invalid
+                " />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="toggleRegisterPasswordVisibility('password')">
+                <i
+                  class="fa"
+                  [ngClass]="
+                    registerPasswordVisible ? 'fa-eye-slash' : 'fa-eye'
+                  "></i>
+              </button>
+              <div
+                class="invalid-feedback"
+                *ngIf="rf['password'].touched && rf['password'].invalid">
+                <span *ngIf="rf['password'].errors?.['required']">
+                  La contraseña es necesaria
+                </span>
+                <span *ngIf="rf['password'].errors?.['minlength']">
+                  Debe tener al menos 6 caracteres
+                </span>
+                <span *ngIf="rf['password'].errors?.['pattern']">
+                  Debe incluir mayúscula, minúscula, número y carácter especial
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirmar Contraseña -->
+          <div class="mb-3">
+            <label for="register-confirm-password" class="form-label">
+              Confirmar Contraseña
+            </label>
+            <div class="input-group">
+              <input
+                [type]="registerConfirmPasswordVisible ? 'text' : 'password'"
+                class="form-control"
+                id="register-confirm-password"
+                formControlName="confirmPassword"
+                [class.is-invalid]="
+                  rf['confirmPassword'].touched &&
+                  (rf['confirmPassword'].invalid ||
+                    registerForm.hasError('passwordMismatch'))
+                " />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="toggleRegisterPasswordVisibility('confirmPassword')">
+                <i
+                  class="fa"
+                  [ngClass]="
+                    registerConfirmPasswordVisible ? 'fa-eye-slash' : 'fa-eye'
+                  "></i>
+              </button>
+              <div
+                class="invalid-feedback"
+                *ngIf="rf['confirmPassword'].touched">
+                <span *ngIf="rf['confirmPassword'].errors?.['required']">
+                  Confirmar la contraseña es necesario
+                </span>
+                <span
+                  *ngIf="registerForm.hasError('passwordMismatch') && !rf['confirmPassword'].errors?.['required']">
+                  Las contraseñas no coinciden
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isRegisterSubmitting || registerForm.invalid">
+              <span
+                *ngIf="isRegisterSubmitting"
+                class="spinner-border spinner-border-sm me-1"
+                role="status"
+                aria-hidden="true"></span>
+              Registrarme
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center mt-3">
+          <p>
+            ¿Ya tienes una cuenta?
+            <a
+              href="javascript:void(0)"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
+              data-bs-dismiss="modal">
+              Iniciar sesión
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Inicio de Sesión -->
+<div
+  class="modal fade"
+  id="loginModal"
+  tabindex="-1"
+  aria-labelledby="loginModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="loginModalLabel">
+          Iniciar Sesión
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+          <!-- Nombre de Usuario -->
+          <div class="mb-3">
+            <label for="login-username" class="form-label">
+              Nombre de Usuario
+            </label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input
+                type="text"
+                class="form-control"
+                id="login-username"
+                formControlName="username"
+                placeholder="Ingrese su nombre de usuario"
+                [class.is-invalid]="
+                  lf['username'].invalid && lf['username'].touched
+                " />
+              <div
+                class="invalid-feedback"
+                *ngIf="lf['username'].invalid && lf['username'].touched">
+                <span *ngIf="lf['username'].errors?.['required']">
+                  El nombre de usuario es requerido
+                </span>
+                <span *ngIf="lf['username'].errors?.['minlength']">
+                  El nombre de usuario debe tener al menos 3 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contraseña -->
+          <div class="mb-3">
+            <label for="login-password" class="form-label">Contraseña</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              <input
+                [type]="loginPasswordVisible ? 'text' : 'password'"
+                class="form-control"
+                id="login-password"
+                formControlName="password"
+                placeholder="Ingrese su contraseña"
+                [class.is-invalid]="
+                  lf['password'].invalid && lf['password'].touched
+                " />
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="loginPasswordVisible = !loginPasswordVisible">
+                <i
+                  class="fas"
+                  [class.fa-eye]="!loginPasswordVisible"
+                  [class.fa-eye-slash]="loginPasswordVisible"></i>
+              </button>
+              <div
+                class="invalid-feedback"
+                *ngIf="lf['password'].invalid && lf['password'].touched">
+                <span *ngIf="lf['password'].errors?.['required']">
+                  La contraseña es requerida
+                </span>
+                <span *ngIf="lf['password'].errors?.['minlength']">
+                  La contraseña debe tener al menos 6 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recordarme -->
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="rememberMe"
+              formControlName="rememberMe" />
+            <label class="form-check-label" for="rememberMe">Recordarme</label>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isLoginSubmitting || loginForm.invalid">
+              <span
+                *ngIf="isLoginSubmitting"
+                class="spinner-border spinner-border-sm me-1"
+                role="status"
+                aria-hidden="true"></span>
+              Iniciar Sesión
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center mt-3">
+          <p>
+            ¿No tienes cuenta?
+            <a
+              href="javascript:void(0)"
+              data-bs-toggle="modal"
+              data-bs-target="#registerModal"
+              data-bs-dismiss="modal">
+              Regístrate aquí
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

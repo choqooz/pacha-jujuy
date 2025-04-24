@@ -18,7 +18,7 @@ export const createPaymentPreference = async (req, res) => {
       ],
       metadata: {
         cartId: cartId,
-        orderId: orderId,
+        // orderId: orderId,
       },
       notification_url: process.env.NOTIFICATION_URL,
       back_urls: {

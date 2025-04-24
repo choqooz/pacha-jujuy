@@ -1,0 +1,68 @@
+<section class="bg-light">
+  <div class="container py-5">
+    <div class="row text-center py-3">
+      <div class="col-lg-6 m-auto">
+        <h1 class="h1">Productos</h1>
+        <p>Lista de productos</p>
+      </div>
+    </div>
+
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="text-center py-5 loading-container">
+      <div class="spinner-border" style="color: #9b6708" role="status">
+        <span class="visually-hidden">Cargando productos...</span>
+      </div>
+    </div>
+
+    <!-- Mensaje si no hay productos disponibles -->
+    <div *ngIf="!isLoading && products.length === 0" class="text-center py-5">
+      <p class="text-muted">No se encontraron productos disponibles.</p>
+    </div>
+
+    <div class="row g-4">
+      <div
+        class="col-12 col-md-6 col-lg-4 mb-4"
+        *ngFor="let product of products; let i = index">
+        <div class="product-card h-100">
+          <div class="product-container">
+            <a (click)="infoProd(product)" class="product-link">
+              <div class="image-container">
+                <img
+                  [src]="product.img"
+                  class="card-img-top product-card-image"
+                  [alt]="'Imagen de ' + product.title" />
+              </div>
+              <div class="shop-text">
+                <p>Ver Producto</p>
+              </div>
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="product-price">{{ product.price | currency }}</span>
+              <small class="text-muted">
+                Cód: {{ product._id | slice : -5 }}
+              </small>
+            </div>
+            <h2 class="product-title">
+              {{ product.title }}
+            </h2>
+            <p class="product-description">
+              {{
+                product.desc.length > 80
+                  ? (product.desc | slice : 0 : 80) + '...'
+                  : product.desc
+              }}
+            </p>
+            <div class="mt-3">
+              <button class="btn btn-add-to-cart" (click)="agregarCar(product)">
+                <i class="bi bi-cart-plus me-2"></i>
+                Agregar al carrito
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

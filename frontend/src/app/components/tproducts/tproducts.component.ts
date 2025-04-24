@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription, finalize, catchError, EMPTY } from 'rxjs';
 import { Product } from 'src/app/models/product';
-import { ProductService } from 'src/app/service/product.service';
-import { UserService } from 'src/app/service/user.service';
+import { ProductService } from 'src/app/services/product.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-tproducts',
@@ -103,16 +103,13 @@ export class TproductsComponent implements OnInit, OnDestroy {
     this.filteredProducts = [...this.products];
   }
 
-
   addProduct(): void {
     this.router.navigate(['fproducts', 0]);
   }
 
-
   editProduct(product: Product): void {
     this.router.navigate(['fproducts', product._id]);
   }
-
 
   deleteProduct(product: Product): void {
     if (!confirm(`¿Está seguro que desea eliminar "${product.title}"?`)) {

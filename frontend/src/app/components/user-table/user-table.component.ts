@@ -1,24 +1,19 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import * as html2pdf from 'html2pdf.js';
-import { Subscription } from 'rxjs';
-import { finalize, catchError } from 'rxjs/operators';
-import { UserService } from 'src/app/service/user.service';
+import { catchError, finalize } from 'rxjs/operators';
+import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
+import { BaseTableComponent } from 'src/app/core/base-components/base-table.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
+import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.css'],
 })
-export class UserTableComponent implements OnInit, OnDestroy {
+export class UserTableComponent extends BaseTableComponent {
   @ViewChild('userTable') userTable!: ElementRef;
 
   users: User[] = [];
@@ -26,40 +21,34 @@ export class UserTableComponent implements OnInit, OnDestroy {
   usernameFilter: string = '';
   startDateFilter: string = '';
   endDateFilter: string = '';
-  isLoading: boolean = false;
   isGeneratingPdf: boolean = false;
 
-  private subscriptions: Subscription = new Subscription();
+  override isLoading = false;
+
   private token: string;
 
   constructor(
     private userService: UserService,
     private toastService: ToastrService,
-    private router: Router
+    protected override errorHandler: ErrorHandlerService,
+    protected override navigationService: NavigationService
   ) {
+    super(errorHandler, navigationService);
     this.token = this.userService.getToken();
   }
 
-  ngOnInit(): void {
-    this.loadUsers();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
   /**
-   * Carga todos los usuarios desde el servicio
+   * Implementa el método abstracto de carga de datos
    */
-  private loadUsers(): void {
+  protected override loadData(): void {
     this.isLoading = true;
 
     const userSub = this.userService
       .getAllUserFilter(this.token)
       .pipe(
         catchError((error) => {
-          this.handleError(error);
-          this.router.navigate(['home']);
+          this.handleError(error, 'Error al cargar usuarios');
+          this.navigationService.goToHome();
           throw error;
         }),
         finalize(() => (this.isLoading = false))
@@ -69,7 +58,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
         this.filteredUsers = [...result];
       });
 
-    this.subscriptions.add(userSub);
+    this.addSubscription(userSub);
   }
 
   /**
@@ -91,7 +80,7 @@ export class UserTableComponent implements OnInit, OnDestroy {
       if (this.startDateFilter && this.endDateFilter) {
         const startDate = new Date(this.startDateFilter);
         const endDate = new Date(this.endDateFilter);
-        endDate.setHours(23, 59, 59); 
+        endDate.setHours(23, 59, 59);
 
         // Verificar que las fechas sean válidas antes de comparar
         if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
@@ -113,9 +102,9 @@ export class UserTableComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Resetea todos los filtros aplicados
+   * Sobrescribe el método resetFilters de la clase base
    */
-  resetFilters(): void {
+  override resetFilters(): void {
     this.usernameFilter = '';
     this.startDateFilter = '';
     this.endDateFilter = '';
@@ -156,17 +145,5 @@ export class UserTableComponent implements OnInit, OnDestroy {
           this.isGeneratingPdf = false;
         });
     }, 100);
-  }
-
-  /**
-   * Centraliza el manejo de errores
-   */
-  private handleError(
-    error: any,
-    defaultMessage: string = 'Ha ocurrido un error'
-  ): void {
-    const errorMessage =
-      error.error?.message || error.message || defaultMessage;
-    this.toastService.error(errorMessage, 'Error', { timeOut: 3500 });
   }
 }

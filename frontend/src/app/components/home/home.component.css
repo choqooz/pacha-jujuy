@@ -1,0 +1,294 @@
+/* Mejoras para productos y categorías */
+.product-link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.product-link .shop-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(155, 103, 8, 0.7);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product-link:hover .shop-text {
+  opacity: 1;
+}
+
+.shop-text p {
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  padding: 8px 20px;
+  background-color: #fff;
+  color: #9b6708;
+  border-radius: 30px;
+  font-weight: 600;
+}
+
+.product-link:hover .shop-text p {
+  transform: translateY(0);
+}
+
+/* Estilos para las imágenes de categoría circulares */
+.product-image {
+  width: 100%;
+  height: 363px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-link:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Nuevos estilos para garantizar imágenes de tamaño uniforme en las cards */
+.product-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.image-container {
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-link:hover .product-card-image {
+  transform: scale(1.05);
+}
+
+/* Arreglo para los botones de categoría */
+.category-button {
+  background: none;
+  border: none;
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s;
+}
+
+.category-button:hover {
+  transform: translateY(-5px);
+}
+
+/* Estilos para estados de carga */
+.loading-container {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo modernizado para la sección de productos */
+.featured-products-section {
+  padding: 4rem 0;
+  background-color: #f8f9fa;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.section-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background-color: #9b6708;
+}
+
+.product-card {
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.product-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-title a {
+  transition: color 0.3s ease;
+}
+
+.product-title a:hover {
+  color: #9b6708 !important;
+}
+
+.product-price {
+  font-weight: 700;
+  color: #9b6708;
+  font-size: 1.1rem;
+}
+
+.product-description {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #9b6708;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  z-index: 2;
+}
+
+/* Estilo modernizado para la sección de categorías */
+.categories-section {
+  padding: 3rem 0;
+}
+
+.categories-container {
+  margin-top: 1.5rem;
+}
+
+.category-item {
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+}
+
+.category-image-container {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  width: 180px;
+  height: 180px;
+  transition: all 0.3s ease;
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.category-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-top: 1rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.category-button:hover .category-title {
+  color: #9b6708;
+}
+
+.category-button:hover .category-image-container {
+  box-shadow: 0 10px 25px rgba(155, 103, 8, 0.2);
+}
+
+.category-button:hover .category-image {
+  transform: scale(1.1);
+}
+
+/* Animación para la entrada de los elementos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Estilo para la sección de información */
+.info-section {
+  background-color: #fff;
+  padding: 4rem 0;
+}
+
+.info-card {
+  padding: 2rem;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.info-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.info-icon {
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background-color: rgba(155, 103, 8, 0.1);
+  color: #9b6708;
+}
+
+.info-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.info-text {
+  color: #6c757d;
+}
